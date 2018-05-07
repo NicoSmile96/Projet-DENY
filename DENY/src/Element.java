@@ -1,6 +1,24 @@
 
-
-public abstract class Element {
-	protected ElementType type;
-	protected Position p;	
+public enum Element {
+	// playmobiles
+	PERSONNAGE('@'),
+	MAGE('M'),
+	ARCHER('A'),
+	GUERRIER('G'),
+	// playpasmobiles
+	VIDE('.'),
+	MUR('#'),
+	COFFRE('+');
+	
+	private char c;
+	
+	// constructeur
+	Element(char c){
+		this.c = c;
+	}
+	
+	// accesseur
+	public char getChar() {
+		return c;
+	}
 }

@@ -1,5 +1,5 @@
 
-// position d'un élément dans la grille
+// position d'un ï¿½lï¿½ment dans la grille
 public class Position {
 	private int i;
 	private int j;

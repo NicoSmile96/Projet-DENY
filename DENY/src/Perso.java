@@ -1,7 +1,11 @@
 
-// Personnage, héritages et interfaces à redéfinir (Nico)
-public class Perso extends Element implements Action{
-
+// Personnage, hï¿½ritages et interfaces ï¿½ redï¿½finir (Nico)
+public class Perso implements Action{
+	// vars liÃ©es aux tableaux
+	private Position p;
+	private Element e;
+	
+	// vars liÃ©es au jeu
 	private int argent;
 	private int xp;
 	private int xpMax;
@@ -11,9 +15,8 @@ public class Perso extends Element implements Action{
 	int armure;
 	int objetsMax;
 	
-	// constructeur défaut - valeurs à modifier
+	// constructeur dï¿½faut - valeurs ï¿½ modifier
 	public Perso() {
-		super.type = ElementType.PERSONNAGE;
 		argent = 0;
 		xp = 0;
 		xpMax = 100;
@@ -51,7 +54,7 @@ public class Perso extends Element implements Action{
 		armure = arm; //pour modifier la resistance du perso par raport a son equipement
 	}
 	
-		// dégats
+		// dï¿½gats
 	public void setDegat(int dmg) {
 		degat = dmg; //pour modifier les dommages du perso par raport a son equipement
 	}
@@ -65,7 +68,7 @@ public class Perso extends Element implements Action{
 		}
 	}	
 	
-	// actions d'interface à redéfinir plus tard dans les classes filles
+	// actions d'interface ï¿½ redï¿½finir plus tard dans les classes filles
 		// attaquer
 	public int attaquer(int i) {
 		return i + degat;
@@ -79,8 +82,37 @@ public class Perso extends Element implements Action{
 			xpMax+=10; //augemenation de la barre d'xp
 		}
 	}
+	
+	// DEPLACEMENT
+	// Boolï¿½en dï¿½placement autorisï¿½ ?
+	public int deplacementAutorise(int i, int j, int iMax, int jMax) {
+		if(i == 0 && j == 0)
+			return 0;
+		if(p.getI()+i < 0 || p.getI()+i >= iMax || p.getJ()+j < 0 || p.getJ()+j >= jMax)
+			return 0;
 		
-	// affichage à mettre dans affichage
+		return 1;
+	}
+	
+	// Dï¿½placer personnage
+	public void deplacerPersonnage(Grille g, String deplacement) {	
+		int i = 0, j = 0;
+		
+		if(deplacement.equals("z")) 			j++;
+		else if(deplacement.equals("s")) 		j--;
+		else if(deplacement.equals("q"))		i--;
+		else if(deplacement.equals("d")) 		i++;
+		
+		if(deplacementAutorise( i,j,g.getLignes(),g.getColonnes() ) == 1) {
+			g.setCase(this.p.getI(),this.p.getJ(),this.e);
+			this.p.setI(p.getI()+i);
+			this.p.setJ(p.getJ()+j);
+			g.setCase(this.p.getI(),this.p.getJ(),this.e);
+		} 
+		else System.out.println("erreur dï¿½placement");
+	}
+		
+	// affichage ï¿½ mettre dans affichage
 	public void etatHUD() {
 		System.out.println("Vie : " + vie +"/"+ vieMax + "      Xp : " + xp + "/" + xpMax);
 	}
