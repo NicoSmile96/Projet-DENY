@@ -12,7 +12,7 @@ public class Jeu {
 		
 		//Initialisation du joueur
 		Joueur j = new Guerrier();
-		aff.afficherJoueur(2,2,j);
+		aff.afficherJoueur(1,1,j);
 		
 		//Collection des mobs de la carte
 		ArrayList<Mob> ar = new ArrayList<Mob>();
@@ -45,8 +45,10 @@ public class Jeu {
 		}
 	
 		//Boucle du jeu
-		for (i=0;i<20;i++)
+		while (j.getVie()>0)
 		{
+			
+			System.out.println("\n\n\n\n\n\n");
 			aff.afficherGrille();
 			aff.etatHUDj(j);
 			
@@ -58,6 +60,7 @@ public class Jeu {
 					System.out.println("L'archer vous attaque !");
 					ar.get(i).attaquer(j);
 					System.out.println("Vous avez perdu "+ar.get(i).degats+" points de vie");
+					aff.etatHUDj(j);
 				}
 				
 				if(j.canAttack(ar.get(i)))
@@ -69,6 +72,17 @@ public class Jeu {
 						j.attaquer(ar.get(i));
 						System.out.println("Vous l'avez blesse !");
 						aff.etatHUDm(ar.get(i));
+						
+						if(ar.get(i).vie <= 0)
+						{
+							
+							aff.supprimerMob(ar.get(i).p.getI(),ar.get(i).p.getJ());
+							ar.remove(i);
+							aff.afficherGrille();
+							aff.etatHUDj(j);
+							System.out.println("Vous l'avez tue !");
+						}
+						
 						Thread.sleep(500);
 					}
 				}
@@ -80,6 +94,7 @@ public class Jeu {
 					System.out.println("Le mage vous attaque !");
 					ma.get(i).attaquer(j);
 					System.out.println("Vous avez perdu "+ma.get(i).degats+" points de vie");
+					aff.etatHUDj(j);
 				}
 				
 				if(j.canAttack(ma.get(i)))
@@ -91,6 +106,15 @@ public class Jeu {
 						j.attaquer(ma.get(i));
 						System.out.println("Vous l'avez blesse !");
 						aff.etatHUDm(ma.get(i));
+						if(ma.get(i).vie <= 0)
+						{
+							aff.supprimerMob(ma.get(i).p.getI(),ma.get(i).p.getJ());
+							ma.remove(i);
+							aff.afficherGrille();
+							aff.etatHUDj(j);
+							System.out.println("Vous l'avez tue !");
+							
+						}
 						Thread.sleep(500);
 					}
 				}
@@ -102,6 +126,7 @@ public class Jeu {
 					System.out.println("Le guerrier vous attaque !");
 					ge.get(i).attaquer(j);
 					System.out.println("Vous avez perdu "+ge.get(i).degats+" points de vie");
+					aff.etatHUDj(j);
 				}
 				
 				if(j.canAttack(ge.get(i)))
@@ -114,19 +139,29 @@ public class Jeu {
 						j.attaquer(ge.get(i));
 						System.out.println("Vous l'avez blesse !");
 						aff.etatHUDm(ge.get(i));
+						if(ge.get(i).vie <= 0)
+						{
+							aff.supprimerMob(ge.get(i).p.getI(),ge.get(i).p.getJ());
+							ge.remove(i);
+							aff.afficherGrille();
+							aff.etatHUDj(j);
+							System.out.println("Vous l'avez tue !");
+							
+						}
 						Thread.sleep(500);
 					}
 				}
 			}
 			
-			
-			System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite ");
+			System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite X Rester ");
 			char d = scan.next().charAt(0);
 			scan.nextLine();
 			aff.deplacement(j,d);
-			System.out.println("\n\n\n\n\n\n");
 			
 		}
+		
+		System.out.println("Vous êtes mort :(");
+		scan.close();
 	}
 	
 	public int randomMinMax(int min, int max)

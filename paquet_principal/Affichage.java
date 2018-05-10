@@ -38,6 +38,11 @@ public class Affichage{
 		m.setPos(pos);
 	}
 	
+	public void supprimerMob(int i,int j)
+	{
+		G.setCase(i,j,Element.LOOT);
+	}
+	
 
 	public void deplacement(Joueur j, char deplacement)
 	{

@@ -101,7 +101,11 @@ public class Joueur extends Perso{
 			else if(deplacement== 's') 		j--;
 			else if(deplacement == 'q')		i--;
 			else if(deplacement == 'd') 	i++;
-			
+			else if(deplacement == 'x')
+			{
+				i=0;
+				j=0;
+			}
 		
 		
 			if(deplacementAutorise(i,j,g.getLignes(),g.getColonnes()))
@@ -122,7 +126,6 @@ public class Joueur extends Perso{
 			}
 			
 		
-			else System.out.println("Deplacement non autorise");
 		}	
 			
 	
