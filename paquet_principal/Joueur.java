@@ -1,6 +1,7 @@
 package paquet_principal;
 import java.util.Scanner;
-import java.util.ArrayList;
+import java.util.*;
+
 
 public class Joueur extends Perso{
 	
@@ -131,7 +132,9 @@ public class Joueur extends Perso{
 		
 		// combattre
 		void combattre(ArrayList<Mob> l, Affichage aff) {
-			for(Mob m : l) {
+			Iterator<Mob> iter = l.iterator();
+			while (iter.hasNext()) {
+				Mob m = iter.next();
 				if(this.canAttack(m)) {
 					Scanner sc = new Scanner(System.in);
 					System.out.println("Attaquer mob : at");
