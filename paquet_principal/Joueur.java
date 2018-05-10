@@ -120,6 +120,7 @@ public class Joueur extends Perso{
 			else if(d == 's') 	j--;
 			else if(d == 'q')	i--;
 			else if(d == 'd') 	i++;
+			else if(d == 'x') 	{};
 			
 			if(!deplacementAutorise(g,i,j)) {
 				System.out.println("Deplacement non autorise");
