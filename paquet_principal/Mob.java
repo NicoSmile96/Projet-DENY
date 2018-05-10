@@ -2,7 +2,8 @@ package paquet_principal;
 
 public class Mob extends Perso{
 	
-	
+	private static final long serialVersionUID = 1L;
+
 	// Constructeur par defaut
 	public Mob()
 	{

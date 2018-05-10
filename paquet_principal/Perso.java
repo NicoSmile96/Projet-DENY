@@ -1,9 +1,11 @@
 package paquet_principal;
 import classe_Perso.TypeClass;
+import java.io.Serializable;
 
 // Classe abstraite dont heritent les classes Mob et Joueur
-public abstract class Perso{
+public abstract class Perso implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	// vars liees aux tableaux
 	protected Position p;
 	protected Element e;

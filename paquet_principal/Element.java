@@ -1,6 +1,7 @@
 package paquet_principal;
+import java.io.Serializable;
 
-public enum Element {
+public enum Element implements Serializable{
 
 	// playmobiles
 	PERSONNAGE('@'),

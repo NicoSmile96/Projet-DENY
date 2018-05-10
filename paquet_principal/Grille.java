@@ -1,7 +1,9 @@
 package paquet_principal;
+import java.io.Serializable;
 
-public class Grille {
-	
+public class Grille implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 	private int lignes;
 	private int colonnes;
 	private Element[][] element;

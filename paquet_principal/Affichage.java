@@ -1,7 +1,9 @@
 package paquet_principal;
+import java.io.Serializable;
 
-public class Affichage{
+public class Affichage implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private Grille G = new Grille(23,20);
 	
 	

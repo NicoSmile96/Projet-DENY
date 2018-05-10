@@ -1,11 +1,13 @@
 package collection_mobs;
 
 import java.util.ArrayList;
-
+import java.io.Serializable;
 import classe_Perso.TypeClass;
 import paquet_principal.*;
 
-public class CollectionMobs {
+public class CollectionMobs implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Mob> l;
 	
 	// constructeur : génère mobs aléatoires

@@ -1,6 +1,7 @@
 package classe_Perso;
+import java.io.Serializable;
 
-public enum TypeClass implements Action{
+public enum TypeClass implements Action, Serializable{
 	GUERRIER(1,3,20),
 	ARCHER(2,3,10),
 	MAGE(3,1,15);

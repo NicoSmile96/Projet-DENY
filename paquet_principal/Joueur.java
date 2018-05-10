@@ -1,10 +1,10 @@
 package paquet_principal;
 import java.util.Scanner;
-import java.util.*;
+import java.util.ArrayList;
 
+public class Joueur extends Perso{	
 
-public class Joueur extends Perso{
-	
+	private static final long serialVersionUID = 1L;
 	private int xp;
 	private int xpMax;
 	private int armure;
@@ -132,12 +132,11 @@ public class Joueur extends Perso{
 		
 		// combattre
 		void combattre(ArrayList<Mob> l, Affichage aff) {
-			Iterator<Mob> iter = l.iterator();
-			while (iter.hasNext()) {
-				Mob m = iter.next();
+			for(Mob m : l) {
 				if(this.canAttack(m)) {
 					Scanner sc = new Scanner(System.in);
 					System.out.println("Attaquer mob : at");
+					
 					String attaque = sc.nextLine();
 					if(attaque.equals("at")){
 						this.attaquer(m);
