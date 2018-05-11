@@ -1,4 +1,5 @@
 package paquet_principal;
+import collection_mobs.Marchand;
 import java.io.Serializable;
 
 public class Affichage implements Serializable{
@@ -21,6 +22,13 @@ public class Affichage implements Serializable{
 		G.setCase(i,j,Element.PERSONNAGE);
 		Position pos = new Position(i,j);
 		jo.setPos(pos);
+	}
+	
+	public void afficherMarchand(int i,int j,Marchand m)
+	{
+		G.setCase(i,j,Element.MARCHAND);
+		Position pos = new Position(i,j);
+		m.setPosition(pos);
 	}
 	
 	public void afficherArcher(int i,int j,Mob a)

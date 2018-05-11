@@ -1,6 +1,9 @@
 package paquet_principal;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import collection_mobs.Marchand;
 
 public class Joueur extends Perso implements Serializable{
 
@@ -166,12 +169,55 @@ public class Joueur extends Perso implements Serializable{
 			}
 		}
 		
-		// mob in range
-		void mobInRange(ArrayList<Mob> l) {
+		// mob ou marchand in range
+		void inRange(ArrayList<Mob> l, Marchand marchand) {
+			// mob en vue
 			for(Mob m : l) {
 				if(this.canAttack(m))
 					System.out.println("Ennemi à portée ! Tapez 'at' pour l'attaquer !");
 			}
+			
+			// marchand en vue
+			if(Math.abs( marchand.getPosition().getI() - this.p.getI()) <= 1 
+					&& Math.abs(marchand.getPosition().getJ() - this.p.getJ()) <= 1 )
+						System.out.println("Marchand à portée ! Tapez 'parler' pour lui parler");
 		}
+		
+		// afficher inventaire personnage
+		void afficherInventaire() {
+			System.out.println("Inventaire : \n");
+            System.out.println("Potion : " +nbPotion+ "    Argent : " + argent);
+		}
+		
+		// acheter marchand
+		void acheter(Marchand m) {
+			afficherInventaire();
+			m.printMarchandise();
+			
+			@SuppressWarnings("resource")
+			Scanner sc = new Scanner(System.in);
+			String nom = sc.nextLine();
+			
+			while(!nom.equals("quitter")) {
+				for(Item i : m.getInventaire()) {
+					if(nom.equals(i.getNom())) {
+						if(argent >= i.getPrix()) {
+							nbPotion++;
+							i.diminuerQuantite(i.getQuantite()-1);
+							System.out.println("Merci pour votre achat !");
+							nom = "quitter";
+						}
+						else {
+							System.out.println("Vous n'avez pas assez d'argent !");
+						}
+					}
+					else {
+						System.out.println("objet non trouvé ! ");
+					}
+				}
+				System.out.println("tapez 'quitter' pour sortir");
+				nom = sc.nextLine();
+			}
+		}	
 }
 

@@ -3,7 +3,7 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 import classe_Perso.*;
-import collection_mobs.CollectionMobs;
+import collection_mobs.*;
 
 public class Jeu implements Serializable{ 
 	private static final long serialVersionUID = 1L;
@@ -14,6 +14,7 @@ public class Jeu implements Serializable{
 	Save s;
 	Load l;
 	CollectionMobs mobs;
+	Marchand m;
 	
 	public Jeu() throws InterruptedException {
 		// initialisation variables
@@ -23,8 +24,10 @@ public class Jeu implements Serializable{
 		l = new Load();
 		mobs = new CollectionMobs(aff);
 		data = new Data();
+		m = new Marchand();
 		
 		Scanner sc = new Scanner(System.in);
+		aff.afficherMarchand(8, 2, m);
 		
 		// définition de la classe
 		j.setTypeClass(TypeClass.GUERRIER);
@@ -38,7 +41,7 @@ public class Jeu implements Serializable{
 			aff.etatHUDj(j);
 			
 			// scan action joueur
-			j.mobInRange(mobs.getList());
+			j.inRange(mobs.getList(),m);
 			attendreActionJoueur(sc);
 			mobs.combattre(j);
 		}
@@ -74,6 +77,9 @@ public class Jeu implements Serializable{
 			
 			aff.afficherGrille();
 			aff.etatHUDj(j);
+		}
+		else if(action.equals("parler")) {
+			j.acheter(m);
 		}
 		else{
 			attendreActionJoueur(sc);
