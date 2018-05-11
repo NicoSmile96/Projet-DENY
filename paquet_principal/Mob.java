@@ -2,8 +2,7 @@ package paquet_principal;
 
 public class Mob extends Perso{
 	
-	private static final long serialVersionUID = 1L;
-
+	
 	// Constructeur par defaut
 	public Mob()
 	{
@@ -12,7 +11,6 @@ public class Mob extends Perso{
 		this.vieMax = 5;
 		this.objetsMax = 2;
 		this.lvl = 1;
-		this.degats = this.t.getDegats();
 	}
 	
 	//Constructeur avec arguments

@@ -1,8 +1,8 @@
 package paquet_principal;
-import java.util.Scanner;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Joueur extends Perso{	
+public class Joueur extends Perso implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private int xp;
@@ -19,12 +19,11 @@ public class Joueur extends Perso{
 			this.lvl = 1;
 			this.xp = 0;
 			this.xpMax = 10;
-			this.degats = this.t.getRange();
-			this.range = this.t.getRange();
+			this.nbPotion = 0;
 		}
 		
 		//constructeur avec argument
-		public Joueur(int arg,int Vie, int viemax, int Degats, int ObjetsMax, int lvl, int xp, int xpmax) 
+		public Joueur(int arg,int Vie, int viemax, int Degats, int ObjetsMax, int lvl, int xp, int xpmax,int nbPotion) 
 		{
 			this.argent = arg;
 			this.vie = Vie;
@@ -34,8 +33,8 @@ public class Joueur extends Perso{
 			this.lvl = lvl;
 			this.xp = xp;
 			this.xpMax = xpmax;
+			this.nbPotion = nbPotion;
 		}
-		
 		
 		// getter
 		public int getArmure() 
@@ -96,28 +95,35 @@ public class Joueur extends Perso{
 			}
 		}
 		
+		//looter 
+		public void looter(Grille g) throws InterruptedException {
+			this.argent = this.argent + 10;
+			this.nbPotion = this.nbPotion + 1; 
+			System.out.println("vous avez gagné " + 10 + "Pieces et " + 1 + " Potions");
+			
+			Thread.sleep(1000);
+		}
+		
 		// déplacer
-		public void deplacerJoueur(Grille g)  throws MurException
+		public boolean deplacerJoueur(Grille g, String d)  throws MurException, InterruptedException
 		{	
 			int i = 0, j = 0;
-			Scanner sc = new Scanner(System.in);
-			char d = sc.next().charAt(0);
 			
-			if(d == 'z') 		j++;
-			else if(d == 's') 	j--;
-			else if(d == 'q')	i--;
-			else if(d == 'd') 	i++;
+			if(d.equals("z")) 		j++;
+			else if(d.equals("s")) 	j--;
+			else if(d.equals("q"))	i--;
+			else if(d.equals("d")) 	i++;
 			
 			if(!deplacementAutorise(g,i,j)) {
 				System.out.println("Deplacement non autorise");
-				deplacerJoueur(g);
+				return false;
 			}
 			else{
-//				sc.close();
 				g.setCase(this.p.getI(),this.p.getJ(),Element.VIDE);
 				this.p.setI(p.getI()+i);
 				this.p.setJ(p.getJ()+j);
 				
+				// mur
 				if(g.getCase(this.p.getI(),this.p.getJ()) == Element.MUR)
 				{
 					try {
@@ -126,36 +132,46 @@ public class Joueur extends Perso{
 						} catch(InterruptedException e) {}
 				}
 				
+				// loot
+				else if(g.getCase(this.p.getI(),this.p.getJ()) == Element.LOOT) {
+					this.looter(g);
+				}
+				
+				// mettre à jour la grille perso
 				g.setCase(this.p.getI(),this.p.getJ(),Element.PERSONNAGE);
 			}
+			
+			return true;
 		}
+
 		
 		// combattre
-		void combattre(ArrayList<Mob> l, Affichage aff) {
-			for(Mob m : l) {
+		void combattre(ArrayList<Mob> l, Affichage aff) throws InterruptedException{			
+			for(int i = 0; i<l.size(); i++) {
+				Mob m = l.get(i);
+				
 				if(this.canAttack(m)) {
-					Scanner sc = new Scanner(System.in);
-					System.out.println("Attaquer mob : at");
-					
-					String attaque = sc.nextLine();
-					if(attaque.equals("at")){
-						this.attaquer(m);
-						System.out.println("Vous l'avez blesse !");
-						aff.etatHUDm(m);
-						if(m.getVie() <= 0)
-						{
-							l.remove(m);
-							aff.supprimerMob(m.p.getI(),m.p.getJ());
-							aff.afficherGrille();
-							aff.etatHUDj(this);
-							System.out.println("Vous l'avez tue !");
-							
-						}
+					this.attaquer(m);
+					System.out.println("Vous l'avez blesse !");
+					aff.etatHUDm(m);
+					if(m.getVie() <= 0){
+						l.remove(i);
+						aff.supprimerMob(m.p.getI(),m.p.getJ());
+						aff.afficherGrille();
+						aff.etatHUDj(this);
+						System.out.println("Vous l'avez tue !");
 					}
-					
-//					sc.close();
+					Thread.sleep(1000);
 				}
 			}
 		}
-	
+		
+		// mob in range
+		void mobInRange(ArrayList<Mob> l) {
+			for(Mob m : l) {
+				if(this.canAttack(m))
+					System.out.println("Ennemi à portée ! Tapez 'at' pour l'attaquer !");
+			}
+		}
 }
+

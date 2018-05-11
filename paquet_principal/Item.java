@@ -2,7 +2,12 @@ package paquet_principal;
 
 public abstract class Item 
 {
+	private int prix;
+	private int quantite;
+	private String objet;
 	
-	//elements coffre inventaire objets ect
-	// notes : * = objet/loot  |  D = coffre   |  V = vendeur  
+	public Item() {}
+	public Item(int prix, int quantite, String objet) {
+		
+	}
 }

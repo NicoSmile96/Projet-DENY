@@ -11,6 +11,10 @@ public class Affichage implements Serializable{
 	{
 		G.afficher();
 	}
+
+	public Grille getGrille() {
+		return G;
+	}
 	
 	public void afficherJoueur(int i,int j,Joueur jo)
 	{
@@ -40,18 +44,19 @@ public class Affichage implements Serializable{
 		m.setPos(pos);
 	}
 	
-
-	public void deplacement(Joueur j)
-	{
-		try {
-				j.deplacerJoueur(G);
-				
-			} catch (MurException e) {}
-	}
-	
 	public void supprimerMob(int i,int j)
 	{
-		G.setCase(i,j,Element.LOOT);
+		double nb;
+		nb = (int)(Math.random() * 2);
+		if ((int)nb == 0) 
+		{
+			G.setCase(i,j,Element.VIDE);
+		}
+
+		else if ((int)nb == 1) 
+		{
+			G.setCase(i,j,Element.LOOT);
+		}
 	}
 	
 	public void etatHUDm(Mob m)

@@ -1,12 +1,12 @@
 package collection_mobs;
-
-import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.ArrayList;
+
 import classe_Perso.TypeClass;
 import paquet_principal.*;
 
 public class CollectionMobs implements Serializable{
-	
+
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Mob> l;
 	
@@ -47,13 +47,16 @@ public class CollectionMobs implements Serializable{
 	}
 	
 	// méthode combat des mobs : tous les mobs de la liste attaquent le joueur s'ils le peuvent
-	public void combattre(Perso joueur) {
+	public void combattre(Perso joueur) throws InterruptedException{
 		for(Mob m : this.l) {
 			if(m.canAttack(joueur)) {
 				System.out.println("Un mob vous attaque !");
 				m.attaquer(joueur);
 				System.out.println("Vous avez perdu "+ m.getDegats()+" points de vie");	
+				Thread.sleep(1000);
 			}
 		}
 	}
+	
+	// méthode déplacement des mobs : si le joueur se trouve à proximité, le mob se déplace vers le joueur
 }

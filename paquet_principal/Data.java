@@ -28,4 +28,5 @@ public class Data implements Serializable{
 	public Affichage getAffichage() {
 		return affichage;
 	}	
+
 }

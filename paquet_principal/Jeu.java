@@ -4,22 +4,27 @@ import java.util.Scanner;
 
 import classe_Perso.*;
 import collection_mobs.CollectionMobs;
-//import collection_mobs.*;
 
 public class Jeu implements Serializable{ 
 	private static final long serialVersionUID = 1L;
 	
 	Data data;
+	Affichage aff;
+	Joueur j;
+	Save s;
+	Load l;
+	CollectionMobs mobs;
 	
 	public Jeu() throws InterruptedException {
 		// initialisation variables
-		
-		Affichage aff = new Affichage();
-		Joueur j = new Joueur();
-		Save s = new Save();
-		Load l = new Load();
-		CollectionMobs mobs = new CollectionMobs(aff);
+		aff = new Affichage();
+		j = new Joueur();
+		s = new Save();
+		l = new Load();
+		mobs = new CollectionMobs(aff);
 		data = new Data();
+		
+		Scanner sc = new Scanner(System.in);
 		
 		// définition de la classe
 		j.setTypeClass(TypeClass.GUERRIER);
@@ -33,70 +38,45 @@ public class Jeu implements Serializable{
 			aff.etatHUDj(j);
 			
 			// scan action joueur
-			System.out.println("save/load");
-			Scanner sc = new Scanner(System.in);
-			String action = sc.next();
-			
-			// save/load
-			if(action.equals("save")) {
-				data = new Data(j,mobs,aff);
-				s.save(data);
-			}
-			if(action.equals("load")) {
-				data = l.load();
-				j = data.getJoueur();
-				aff = data.getAffichage();
-				mobs = data.getMobs();
-				
-				aff.afficherGrille();
-				aff.etatHUDj(j);
-			}
-			
-			//Combat
-			j.combattre(mobs.getList(),aff);
-			Thread.sleep(500);
+			j.mobInRange(mobs.getList());
+			attendreActionJoueur(sc);
 			mobs.combattre(j);
-			
-			System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite ");
-			aff.deplacement(j);
-			System.out.println("\n\n\n\n\n\n");
-			
 		}
+		
+		sc.close();
 	}
 	
-	// fonction toString pour tester load
-	public void testLoad() {
-	
-	}
-	
-	// attendre action du joueur
-	public void attendreActionJoueur(CollectionMobs mobs, Affichage aff, Grille g, Joueur j) throws InterruptedException{
+	// attendre action joueur
+	public void attendreActionJoueur(Scanner sc) throws InterruptedException{
 		System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite ");
-		System.out.println("\n\n\n\n\n\n");
-
-		Scanner sc = new Scanner(System.in);
+		System.out.println("save/load");
 		String action = sc.nextLine();
 		
 		if(action.equals("at")) {
 			j.combattre(mobs.getList(), aff);
-			Thread.sleep(500);	
-			mobs.combattre(j,aff);
 		}
 		else if(action.equals("z") || action.equals("q") || action.equals("s") || action.equals("d")) {
-			boolean b = false;
-			do{
-				action = sc.nextLine();
-				try {
-					b = j.deplacerJoueur(g,action);
-				} catch (MurException e) {}
-			} while(!b); 
+			try {
+				if(!j.deplacerJoueur(aff.getGrille(), action)) {
+					attendreActionJoueur(sc);
+				}
+			} catch (MurException e) {}
 		}
 		else if(action.equals("save")) {
-			
+			data = new Data(j,mobs,aff);
+			s.save(data);;
 		}
-		else {
-			sc.close();
-			attendreActionJoueur(mobs,aff,g,j);
+		else if(action.equals("load")) {
+			data = l.load();
+			j = data.getJoueur();
+			aff = data.getAffichage();
+			mobs = data.getMobs();
+			
+			aff.afficherGrille();
+			aff.etatHUDj(j);
+		}
+		else{
+			attendreActionJoueur(sc);
 		}
 	}
 }

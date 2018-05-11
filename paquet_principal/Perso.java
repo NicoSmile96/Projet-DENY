@@ -1,11 +1,11 @@
 package paquet_principal;
-import classe_Perso.TypeClass;
 import java.io.Serializable;
+import classe_Perso.TypeClass;
 
 // Classe abstraite dont heritent les classes Mob et Joueur
 public abstract class Perso implements Serializable{
-	
 	private static final long serialVersionUID = 1L;
+	
 	// vars liees aux tableaux
 	protected Position p;
 	protected Element e;
@@ -24,6 +24,7 @@ public abstract class Perso implements Serializable{
 	protected int objetsMax;
 	protected int lvl;	
 	protected int range;
+	protected int nbPotion;
 	
 	// accesseurs
 	
@@ -40,7 +41,7 @@ public abstract class Perso implements Serializable{
 	}
 	
 	public int getDegats() {
-		return degats;
+		return t.getDegats();
 	}
 	
 	public int getObjetsMax() {
@@ -65,7 +66,6 @@ public abstract class Perso implements Serializable{
 	public void setVie(float v) {
 		this.vie = v;
 	}
-	
 	
 	public void setDegats(int dmg) {
 		this.degats = dmg; 
@@ -117,7 +117,7 @@ public abstract class Perso implements Serializable{
 			return false;
 		if(this.p.getI()+i < 0 || this.p.getI()+i >= g.getLignes() || this.p.getJ()+j < 0 || this.p.getJ()+j >= g.getColonnes())
 			return false;
-		if(g.getCase(p.getI()+i , p.getJ()+j) != Element.VIDE)
+		if(g.getCase(p.getI()+i,p.getJ()+j) != Element.VIDE && g.getCase(p.getI()+i,p.getJ()+j) != Element.LOOT)
 			return false;
 		return true;
 	}
@@ -125,13 +125,11 @@ public abstract class Perso implements Serializable{
 	//Booleen attaque autorisee ?
 		public boolean canAttack(Perso en)
 		{
-			if ((en.p.getI()>= this.p.getI()-this.t.getRange() && en.p.getI()<= this.p.getI()+this.t.getRange())
-			  &&(en.p.getJ()>= this.p.getJ()-this.t.getRange() && en.p.getJ()<= this.p.getJ()+this.t.getRange()))
-			return true;
+			if ( (Math.abs(en.p.getI() - this.p.getI()) <= this.t.getRange()) && (Math.abs(en.p.getJ()-this.p.getJ()) <= this.t.getRange()) )
+				return true;
 			
 			else
-			return false;
-		
+				return false;
 		}
 		
 }
