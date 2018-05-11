@@ -3,7 +3,6 @@ import java.io.Serializable;
 
 // position d'un element dans la grille
 public class Position implements Serializable{
-
 	private static final long serialVersionUID = 1L;
 	private int i;
 	private int j;

@@ -1,6 +1,7 @@
 package paquet_principal;
-import java.io.Serializable;
 import classe_Perso.TypeClass;
+
+import java.io.Serializable;
 
 // Classe abstraite dont heritent les classes Mob et Joueur
 public abstract class Perso implements Serializable{
@@ -41,7 +42,7 @@ public abstract class Perso implements Serializable{
 	}
 	
 	public int getDegats() {
-		return t.getDegats();
+		return degats;
 	}
 	
 	public int getObjetsMax() {
@@ -60,12 +61,17 @@ public abstract class Perso implements Serializable{
 		return t.getRange();
 	}
 	
+	public TypeClass getType() {
+		return t;
+	}
+	
 	
 	// mutateurs
 
 	public void setVie(float v) {
 		this.vie = v;
 	}
+	
 	
 	public void setDegats(int dmg) {
 		this.degats = dmg; 
@@ -117,7 +123,7 @@ public abstract class Perso implements Serializable{
 			return false;
 		if(this.p.getI()+i < 0 || this.p.getI()+i >= g.getLignes() || this.p.getJ()+j < 0 || this.p.getJ()+j >= g.getColonnes())
 			return false;
-		if(g.getCase(p.getI()+i,p.getJ()+j) != Element.VIDE && g.getCase(p.getI()+i,p.getJ()+j) != Element.LOOT)
+		if(g.getCase(p.getI()+i , p.getJ()+j) != Element.VIDE && g.getCase(p.getI()+i , p.getJ()+j) != Element.LOOT && g.getCase(p.getI()+i , p.getJ()+j) != Element.PORTE)
 			return false;
 		return true;
 	}
@@ -127,7 +133,6 @@ public abstract class Perso implements Serializable{
 		{
 			if ( (Math.abs(en.p.getI() - this.p.getI()) <= this.t.getRange()) && (Math.abs(en.p.getJ()-this.p.getJ()) <= this.t.getRange()) )
 				return true;
-			
 			else
 				return false;
 		}

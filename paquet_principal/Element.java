@@ -9,11 +9,12 @@ public enum Element implements Serializable{
 	ARCHER('A'),
 	GUERRIER('G'),
 	// playpasmobiles
-	MARCHAND('$'),
 	VIDE('.'),
 	MUR('#'),
 	LOOT('*'),
-	COFFRE('+');
+	COFFRE('+'),
+	PORTE('£'),
+	MARCHAND('$');
 	
 	private char c;
 	

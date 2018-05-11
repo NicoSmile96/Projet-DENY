@@ -1,70 +1,105 @@
 package paquet_principal;
+import collection_mobs.*;
 import java.io.Serializable;
 import java.util.Scanner;
-
-import classe_Perso.*;
-import collection_mobs.*;
 
 public class Jeu implements Serializable{ 
 	private static final long serialVersionUID = 1L;
 	
-	Data data;
-	Affichage aff;
-	Joueur j;
-	Save s;
-	Load l;
-	CollectionMobs mobs;
-	Marchand m;
+	// variables
+	private Data data;
+	private Affichage aff;
+	private Joueur j;
+	private Save s;
+	private Load l;
+	private CollectionMobs mobs;
+	private Marchand m;
+	private int lvl = 0;
+	private int i = 1;
 	
 	public Jeu() throws InterruptedException {
 		// initialisation variables
-		aff = new Affichage();
 		j = new Joueur();
 		s = new Save();
 		l = new Load();
-		mobs = new CollectionMobs(aff);
 		data = new Data();
 		m = new Marchand();
-		
-		Scanner sc = new Scanner(System.in);
-		aff.afficherMarchand(8, 2, m);
-		
+		aff = new Affichage();
+				
 		// définition de la classe
-		j.setTypeClass(TypeClass.GUERRIER);
-		aff.afficherJoueur(2,2,j);		
-	
-		//Boucle du jeu
-		for (int i=0;i<200;i++)
-		{
-			// affichage
-			aff.afficherGrille();
-			aff.etatHUDj(j);
-			
-			// scan action joueur
-			j.inRange(mobs.getList(),m);
-			attendreActionJoueur(sc);
-			mobs.combattre(j);
-		}
+		aff.afficherMenuClasse(j);		
 		
-		sc.close();
+		// boucle principale
+		while(i==1){		
+			// réinitialisation map
+			aff = new Affichage();
+			mobs = new CollectionMobs(aff,lvl);
+			aff.afficherJoueur(1,1,j);	
+			aff.afficherpalier(lvl);
+			aff.afficherMarchand(8, 2, m);
+			
+			//Boucle du jeu
+			while (j.enVie() && (j.p.getI()!=20 || j.p.getJ()!= 17)){
+				
+				// Affichage
+				aff.afficherGrille();
+				aff.etatHUDj(j);
+		
+				// scan action joueur
+				j.inRange(mobs.getList(),m);
+				attendreActionJoueur();
+				mobs.combattre(j);
+			}
+				
+			if(j.enVie()){
+				System.out.println("Niveau Suivant");
+				i = 1;
+			}
+			else{
+				System.out.println("Game Over");
+				i=0;
+			}
+			
+			// Niveau supérieur
+			etage_superieur();
+		 }
+	}
+	
+	// étage supérieur
+	public void etage_superieur(){
+		this.lvl = lvl + 1;
 	}
 	
 	// attendre action joueur
-	public void attendreActionJoueur(Scanner sc) throws InterruptedException{
+	public void attendreActionJoueur() throws InterruptedException{
 		System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite ");
-		System.out.println("save/load");
+		System.out.println("Afficher inventaire : i");
+		System.out.println("Boire Potion : boire potion");
+		System.out.println("Sauvegarde/chargement : save/load");
+		
+		@SuppressWarnings("resource")
+		Scanner sc = new Scanner(System.in);
 		String action = sc.nextLine();
 		
-		if(action.equals("at")) {
-			j.combattre(mobs.getList(), aff);
+		// attaquer/combattre
+		if(action.equals("attaquer")) {
+			if(j.inRange(mobs.getList())) {
+				j.combattre(mobs.getList(), aff);
+			}
+			else {
+				System.out.println("Monstres hors de portée !");
+				attendreActionJoueur();
+			}
 		}
+		// déplacement
 		else if(action.equals("z") || action.equals("q") || action.equals("s") || action.equals("d")) {
 			try {
 				if(!j.deplacerJoueur(aff.getGrille(), action)) {
-					attendreActionJoueur(sc);
+					attendreActionJoueur();
 				}
 			} catch (MurException e) {}
 		}
+		// sauvegarde/chargement
 		else if(action.equals("save")) {
 			data = new Data(j,mobs,aff);
 			s.save(data);;
@@ -78,11 +113,33 @@ public class Jeu implements Serializable{
 			aff.afficherGrille();
 			aff.etatHUDj(j);
 		}
+		// marchand
 		else if(action.equals("parler")) {
-			j.acheter(m);
+			if(j.inRange(m)) j.acheter(m);
+			else {
+				System.out.println("aucun marchand à proximité !");
+				attendreActionJoueur();
+			}
 		}
+		// inventaire
+		else if(action.equals("i")) {
+			j.afficherInventaire();
+			Thread.sleep(500);
+			attendreActionJoueur();
+		}
+		// potion
+		else if(action.equals("boire potion")) {
+			if(j.getNbPotion() > 0) j.utiliserPotion();
+			else {
+				System.out.println("Aucune potion !");
+				attendreActionJoueur();
+			}
+		}
+		// rappel récursif
 		else{
-			attendreActionJoueur(sc);
+			System.out.print("Erreur, mauvaise commande !");
+			attendreActionJoueur();
 		}
 	}
+	
 }

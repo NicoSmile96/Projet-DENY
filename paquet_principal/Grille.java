@@ -2,14 +2,13 @@ package paquet_principal;
 import java.io.Serializable;
 
 public class Grille implements Serializable{
-	
 	private static final long serialVersionUID = 1L;
 	private int lignes;
 	private int colonnes;
 	private Element[][] element;
 	
 	// Constructeur
-	public Grille (int l, int c) 
+	public Grille (int c, int l) 
 	{
 		lignes = l;
 		colonnes = c;
@@ -44,6 +43,7 @@ public class Grille implements Serializable{
 				element[(int)nb][j] = Element.MUR;
 			}
 		}
+		element[20][17] = Element.PORTE;
 	}
 	
 	// Accesseurs
