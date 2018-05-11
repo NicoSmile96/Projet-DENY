@@ -7,29 +7,36 @@ import paquet_principal.*;
 
 public class CollectionMobs {
 	private ArrayList<Mob> l;
+	int i,j;
 	
 	// constructeur : génère mobs aléatoires
-	public CollectionMobs(Affichage aff){
+	public CollectionMobs(Affichage aff, int lvl){
 		l = new ArrayList<Mob>();
 		
-		// différents types de mobs sont générés et stockés dans la liste l
-		for (int i=0; i<randomMinMax(1,4); i++){
+		i = 1 +(2*lvl);
+		j = 2 +(2*lvl);
+		
+		// différents types de mobs sont générés et stockés dans la liste l en fonction du niveau
+		for (int i=0; i<randomMinMax(i,j); i++){
 			Mob m = new Mob();
 			m.setTypeClass(TypeClass.ARCHER);
+			m.setlvl(lvl);
 			l.add(m);
-			aff.afficherArcher(randomMinMax(3,18),randomMinMax(3,18),m);
+			aff.afficherArcher(randomMinMax(3,16),randomMinMax(3,16),m);
 		}
-		for (int i=0; i<randomMinMax(1,4); i++){
+		for (int i=0; i<randomMinMax(i,j); i++){
 			Mob m = new Mob();
 			m.setTypeClass(TypeClass.MAGE);
+			m.setlvl(lvl);
 			l.add(m);
-			aff.afficherMage(randomMinMax(3,18),randomMinMax(3,18),m);
+			aff.afficherMage(randomMinMax(3,16),randomMinMax(3,16),m);
 		}
-		for (int i=0; i<randomMinMax(1,4); i++){
+		for (int i=0; i<randomMinMax(i,j); i++){
 			Mob m = new Mob();
 			m.setTypeClass(TypeClass.GUERRIER);
+			m.setlvl(lvl);
 			l.add(m);
-			aff.afficherGuerrier(randomMinMax(3,18),randomMinMax(3,18),m);
+			aff.afficherGuerrier(randomMinMax(3,16),randomMinMax(3,16),m);
 		}
 	}
 	
@@ -50,7 +57,7 @@ public class CollectionMobs {
 			if(m.canAttack(joueur)) {
 				System.out.println("Un mob vous attaque !");
 				m.attaquer(joueur);
-				System.out.println("Vous avez perdu "+ m.getDegats()+" points de vie");	
+				System.out.println("Vous avez perdu "+ m.getType().getDegats()+" points de vie");	
 			}
 		}
 	}

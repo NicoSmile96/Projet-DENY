@@ -1,19 +1,18 @@
 package paquet_principal;
 
-import java.util.*;
-
 public class Affichage{
 	
-	private Grille G = new Grille(23,20);
+
+	private Grille G = new Grille(20,23);
 	
 	
+	
+	//Méthodes d'affichage
 	public void afficherGrille()
 	{
 		G.afficher();
 	}
 	
-	
-
 	public Grille getGrille() {
 		return G;
 	}
@@ -68,6 +67,11 @@ public class Affichage{
 		{
 			G.setCase(i,j,Element.LOOT);
 		}
+	}
+	
+	public void afficherpalier(int lvl)
+	{
+		System.out.println("Palier numero "+(lvl+1));
 	}
 	
 	public void etatHUDm(Mob m)

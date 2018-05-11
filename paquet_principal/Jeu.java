@@ -4,35 +4,63 @@ import classe_Perso.*;
 
 public class Jeu{ 
 	
-	public Jeu() throws InterruptedException {
-		Affichage aff = new Affichage();
-		int i;
+	private int lvl = 0;
+	private int i = 1;
+	public Jeu() throws InterruptedException 
+	{
 		
 		//Initialisation du joueur
 		Joueur j = new Joueur();
 		j.setTypeClass(TypeClass.GUERRIER);
-		aff.afficherJoueur(2,2,j);
-		
-		//Collection des mobs de la carte
-		CollectionMobs mobs = new CollectionMobs(aff);
-	
-		//Boucle du jeu
-		for (i=0;i<20;i++)
+		while(i==1)
 		{
-			aff.afficherGrille();
-			aff.etatHUDj(j);
 			
-			//Combat
-			j.combattre(mobs.getList(),aff);
-			Thread.sleep(500);
-			mobs.combattre(j);
+			Affichage aff = new Affichage();
+			aff.afficherJoueur(1,1,j);
+	
+			//Collection des mobs de la carte
+			CollectionMobs mobs = new CollectionMobs(aff,lvl);
 			
-			System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite ");
-			aff.deplacement(j);
-			j.looter(aff.getGrille());
-			System.out.println("\n\n\n\n\n\n");
+			aff.afficherpalier(lvl);
 			
-		}
+				//Boucle du jeu
+				while (j.enVie() && (j.p.getI()!=20 || j.p.getJ()!= 17))
+				{
+					aff.afficherGrille();
+					aff.etatHUDj(j);
+			
+					//Combat
+					j.combattre(mobs.getList(),aff);
+					Thread.sleep(500);
+					mobs.combattre(j);
+			
+					System.out.println("Deplacement : Z Haut Q Gauche S Bas D Droite ");
+					aff.deplacement(j);
+					//j.looter(aff.getGrille());
+					System.out.println("\n\n\n\n\n\n");
+			
+				}
+				
+				if(j.enVie())
+				{
+					System.out.println("Niveau Suivant");
+					i = 1;
+				}
+				else
+				{
+					System.out.println("Game Over");
+					i=0;
+				}
+			
+			// Niveau supérieur
+			etage_superieur();
+		 }
+	}
+	
+	public void etage_superieur()
+	{
+		this.lvl = lvl + 1;
+		
 	}
 	
 }

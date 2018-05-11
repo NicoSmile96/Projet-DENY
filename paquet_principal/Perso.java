@@ -58,6 +58,10 @@ public abstract class Perso{
 		return t.getRange();
 	}
 	
+	public TypeClass getType() {
+		return t;
+	}
+	
 	
 	// mutateurs
 
@@ -116,7 +120,7 @@ public abstract class Perso{
 			return false;
 		if(this.p.getI()+i < 0 || this.p.getI()+i >= g.getLignes() || this.p.getJ()+j < 0 || this.p.getJ()+j >= g.getColonnes())
 			return false;
-		if(g.getCase(p.getI()+i , p.getJ()+j) != Element.VIDE && g.getCase(p.getI()+i , p.getJ()+j) != Element.LOOT)
+		if(g.getCase(p.getI()+i , p.getJ()+j) != Element.VIDE && g.getCase(p.getI()+i , p.getJ()+j) != Element.LOOT && g.getCase(p.getI()+i , p.getJ()+j) != Element.PORTE)
 			return false;
 		return true;
 	}

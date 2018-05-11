@@ -11,7 +11,8 @@ public enum Element {
 	VIDE('.'),
 	MUR('#'),
 	LOOT('*'),
-	COFFRE('+');
+	COFFRE('+'),
+	PORTE('£');
 	
 	private char c;
 	

@@ -7,7 +7,7 @@ public class Grille {
 	private Element[][] element;
 	
 	// Constructeur
-	public Grille (int l, int c) 
+	public Grille (int c, int l) 
 	{
 		lignes = l;
 		colonnes = c;
@@ -42,6 +42,7 @@ public class Grille {
 				element[(int)nb][j] = Element.MUR;
 			}
 		}
+		element[20][17] = Element.PORTE;
 	}
 	
 	// Accesseurs

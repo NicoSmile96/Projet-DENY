@@ -13,13 +13,13 @@ public class Joueur extends Perso{
 		public Joueur() 
 		{
 			this.argent = 0;
-			this.vie = 10;
-			this.vieMax = 10;
+			this.vie = this.t.getVie();;
+			this.vieMax = this.t.getVieMax();
 			this.objetsMax = 5;
 			this.lvl = 1;
 			this.xp = 0;
 			this.xpMax = 10;
-			this.degats = this.t.getRange();
+			this.degats = this.t.getDegats();
 			this.range = this.t.getRange();
 			this.nbPotion = 0;
 		}
@@ -91,10 +91,12 @@ public class Joueur extends Perso{
 			if (this.getXp() == this.getXpMax())
 			{ 
 				setVieMax(this.vieMax+10); //augmentation des Pv de base
+				setVie(this.vieMax);
 				setDegats(this.degats+10); // augmentation des degats de base
 				setxp(0); 
 				setxpMax(this.xpMax+10); //augmentation de la barre d'xp
 				setlvl(this.lvl+1);
+				System.out.println("Vous avez gagne un niveau !");
 			}
 		}
 		
@@ -145,7 +147,7 @@ public class Joueur extends Perso{
 		}
 		
 		// combattre
-		void combattre(ArrayList<Mob> l, Affichage aff) {
+		public void combattre(ArrayList<Mob> l, Affichage aff) {
 			for(int i = 0; i<l.size(); i++) {
 				Mob m = l.get(i);
 				
@@ -162,16 +164,24 @@ public class Joueur extends Perso{
 							l.remove(i);
 							aff.supprimerMob(m.p.getI(),m.p.getJ());
 							aff.afficherGrille();
+							this.xp = xp+2;
+							this.lvlUp();
 							aff.etatHUDj(this);
 							System.out.println("Vous l'avez tue !");
 							
+							
 						}
 					}
-					
-//					sc.close();
 				}
 			}
-			
+		}
+		
+		
+		public boolean enVie()
+		{
+			if(this.vie>0)
+				return true;
+			return false;
 		}
 }
 
